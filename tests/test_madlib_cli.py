@@ -12,11 +12,11 @@ def test_read_template():
     assert expected == actual
 
 def test_parse_template():
-    expected = ["Adjective","Adjective","Noun"]
-    actual = parse_template("It was a {Adjective} and {Adjective} {Noun}.")
-    assert expected == actual
+    expected = ["Adjective","Adjective","Noun"] , "It was a {} and {} {}."
+     
+    assert expected == parse_template("It was a {Adjective} and {Adjective} {Noun}.")
 
 def test_merge_function():
     expected = "It was a fun and cool journy."
-    actual = merge_function("It was a {Adjective} and {Adjective} {Noun}.",["fun","cool","journy"])
+    actual = merge_function("It was a {} and {} {}.",["fun","cool","journy"])
     assert expected == actual
