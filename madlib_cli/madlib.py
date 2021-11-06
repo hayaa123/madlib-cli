@@ -1,5 +1,4 @@
-import re
-from typing import Pattern
+
 def read_template(path):
 
     with open(path) as file :
@@ -11,19 +10,24 @@ def parse_template (string):
 
     words = []
     temp_word = ""
+    parsed_text = ""
     is_reached = False
     for letter in string:
-        if  letter == "{" : 
+        if  letter == "{" :
+            parsed_text +=letter      
             is_reached  = True
         
         elif letter == "}" :
             words.append(temp_word)
+            parsed_text+=letter
             is_reached= False
             temp_word =""
 
         elif is_reached == True :
             temp_word += letter
-    return words
+        else :
+            parsed_text+=letter
+    return words, parsed_text
 
 def user_inputs (words):
     
@@ -38,19 +42,18 @@ def user_inputs (words):
         
 
 def merge_function (string , words):
-    template_words = parse_template(string)
-    user_words = words
+    
+    return string.format(*words)
 
-    for (temp,user) in zip(template_words,user_words):
-        
-        string= string.replace(f"{{{temp}}}",user,1)
-
-    return string
+def save_on_file (text):
+    with open("new_file.txt", "x") as f:
+        f.write(text)
 
 if __name__ == "__main__":
 
     content = read_template("madlib_cli/assets/game.txt")
-    words = parse_template(content)
+    words,parsed_text = parse_template(content)
     words = user_inputs(words)
-    print(merge_function(content,words))
-
+    merged_text = merge_function(parsed_text,words)
+    print(merged_text)
+    save_on_file(merged_text)
